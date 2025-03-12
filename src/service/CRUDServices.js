@@ -17,6 +17,7 @@ let createNewUser = (data) => {
                 address: data.address,
                 phonenumber: data.phonenumber,
                 gender: data.gender === "1" ? true : false,
+                // roleId = dât === "Admin" ? 1 : event.target.value === "Doctor" ? 2 : 3
                 roleId: data.roleId,
             });
             resolve("ok create a new user succeed!");
@@ -91,9 +92,26 @@ let updateUserData = (data) => {
     });
 };
 
+let deleteUserById = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { id: id },
+            });
+            if (user) {
+                await user.destroy();
+                resolve();
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 module.exports = {
     createNewUser: createNewUser,
     getAllUser: getAllUser,
     getUserinfoById: getUserinfoById,
     updateUserData: updateUserData,
+    deleteUserById: deleteUserById,
 };
